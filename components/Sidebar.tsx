@@ -54,7 +54,6 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
-      Sidebar
     </div>
   );
 };
