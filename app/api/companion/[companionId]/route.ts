@@ -53,3 +53,29 @@ export async function PATCH(
     return new NextResponse("Server Error", { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { companionId: string } }
+) {
+  try {
+    console.log("ok");
+    const user = await currentUser();
+
+    if (!user || !user.id || !user.firstName) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const companion = await prismadb.companion.delete({
+      where: {
+        userId: user.id,
+        id: params.companionId,
+      },
+    });
+
+    return NextResponse.json(companion);
+  } catch (error) {
+    console.log("companion_delete", error);
+    return new NextResponse("Server Error", { status: 500 });
+  }
+}
